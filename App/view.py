@@ -54,8 +54,8 @@ while True:
     if int(inputs[0]) == 0:
         print("Creando y cargando información del archivo ....")
         cont=controller.initcatalog()
-        controller.loaddata(catalog)
-        controller.load_ufos(cont, ufosfile)
+        controller.loaddata(cont)
+        controller.load_ufos(cont)
 #        print("Para el índice de ")
 
     elif int(inputs[0]) == 2:
@@ -64,3 +64,14 @@ while True:
     else:
         sys.exit(0)
 sys.exit(0)
+
+
+
+
+
+
+
+
+
+
+

@@ -48,9 +48,7 @@ def newCatalog():
           "Date":None,
           "Longitude":None
          }
-    catalog['UFOS']= lt.newList('SINGLE_LINKED'
-                                #comparefunction= compareufos
-                                )
+    catalog['UFOS']= lt.newList('SINGLE_LINKED')
 #Req 1
     catalog["Cities"]=mp.newMap(19901,
                            maptype="PROBING",
@@ -142,7 +140,7 @@ def addcities(tablecity,city,ufos):
         if city != "" and mp.contains(tablecity,city)==False:
             ufoslist=lt.newList("ARRAY_LIST")
             lt.addLast(ufoslist,ufos)
-            mp.put(ufoslist,city,ufoslist)
+            mp.put(tablecity,city,ufoslist)
         elif mp.contains(tablecity,city)==True:
             temp=mp.get(tablecity,city)
             temp=me.getValue(temp)
