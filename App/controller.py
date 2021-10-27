@@ -23,11 +23,39 @@
 import config as cf
 import model
 import csv
-
+from DISClib.ADT import list as lt
 
 """
 El controlador se encarga de mediar entre la vista y el modelo.
 """
+# Inicialización del Catálogo de UFOS
+def initcatalog():
+    catalog=model.newCatalog()
+    return catalog
+
+# Funciones para la carga de datos
+def loaddata(catalog):
+    try:
+        load_ufos(catalog)
+        load_tables(catalog)
+    except Exception as e:
+        raise e
+
+def load_ufos(catalog):
+    ufosfile=cf.data_dir+"UFOS-utf8-small.csv"
+    input_file=csv.DictReader(open(ufosfile,encoding="utf-8"), 
+                              delimiter="," )
+    for ufos in input_file:
+        model.addufos(catalog,ufos)
+    return catalog
+
+def load_tables(catalog):
+    for ufos in lt.iterator (catalog["UFOS"]):
+        city=ufos["city"]
+        tablecity=catalog["Cities"]
+        model.addcities(tablecity,city,ufos)
+    return catalog
+
 
 # Inicialización del Catálogo de libros
 

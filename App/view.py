@@ -33,11 +33,15 @@ Presenta el menu de opciones y por cada seleccion
 se hace la solicitud al controlador para ejecutar la
 operación solicitada
 """
-
+ufosfile="UFOS-utf8.csv"
 def printMenu():
     print("Bienvenido")
-    print("1- Cargar información en el catálogo")
-    print("2- ")
+    print("0- Crear y cargar información en el catálogo")
+    print("1- Contar los avistamientos de Ovnis en una ciudad")
+    print("2- Contar los avistamientos de Ovnis por duración")
+    print("3- Contar avistamientos de Ovnispor Hora/Minutos del día")
+    print("4- Contar los avistamientos de Ovnis en un rango de fechas")
+    print("5- Contar los avistamientos de Ovnis de una Zona Geográfica")
 
 catalog = None
 
@@ -47,8 +51,12 @@ Menu principal
 while True:
     printMenu()
     inputs = input('Seleccione una opción para continuar\n')
-    if int(inputs[0]) == 1:
-        print("Cargando información de los archivos ....")
+    if int(inputs[0]) == 0:
+        print("Creando y cargando información del archivo ....")
+        cont=controller.initcatalog()
+        controller.loaddata(catalog)
+        controller.load_ufos(cont, ufosfile)
+#        print("Para el índice de ")
 
     elif int(inputs[0]) == 2:
         pass
