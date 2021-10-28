@@ -31,7 +31,7 @@ from DISClib.ADT import orderedmap as om
 from DISClib.ADT import map as mp
 from DISClib.DataStructures import mapentry as me
 from DISClib.Algorithms.Sorting import shellsort as sa
-import datetime
+import datetime as dt
 assert cf
 
 """
@@ -132,9 +132,10 @@ def addufos(catalog, ufos):
         "longitude":ufos["longitude"]
         }
     lt.addLast(catalog["UFOS"],ufo)
+    updateDuration(catalog["Duration"],ufos)
 
 
-#agregar información al indice del req1
+#agregar informacion al indice del req1
 def addcities(tablecity,city,ufos):
     try:
         if city != "" and mp.contains(tablecity,city)==False:
@@ -148,11 +149,35 @@ def addcities(tablecity,city,ufos):
     except Exception as e:
         raise e
 
-# Construccion de modelos
 
-# Funciones para creacion de datos
+#agregar informacion al indice del req2
+def updateDuration(tree, ufo):
+    occurredduration=ufo["duration (seconds)"]
+    entry=om.get(tree,occurredduration)
+    if entry is None:
+        durationentry=lt.newList("ARRAY_LIST")
+        om.put(tree,occurredduration,durationentry)
+    else:
+        durationentry=me.getValue(entry)
+    lt.addLast(durationentry,ufo)
+    return tree
+
+def req2indexHeight (catalog):
+    return om.height(catalog["Duration"])
+
+def req2indexSize(catalog):
+    return om.size(catalog["Duration"])
+
+#agregar informacion al indice del req 2
+
+
 
 # Funciones de consulta
+#Req1, crear arbol por la ciudad entrada por parametro
+def createtreecity(catalog, city):
+    citytable=catalog["Cities"]
+
+
 
 # Funciones utilizadas para comparar elementos dentro de una lista
 

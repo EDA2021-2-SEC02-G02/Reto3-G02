@@ -56,7 +56,17 @@ def load_tables(catalog):
         model.addcities(tablecity,city,ufos)
     return catalog
 
+#req 1
+def createtreecity(catalog,city):
+    model.createtreecity(catalog,city)
 
+#req 2
+def req2indexHeight(catalog):
+    return model.req2indexHeight(catalog)
+
+def req2indexSize(catalog):
+    return model.req2indexSize(catalog)
+    
 # Inicialización del Catálogo de libros
 
 # Funciones para la carga de datos

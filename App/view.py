@@ -56,9 +56,11 @@ while True:
         cont=controller.initcatalog()
         controller.loaddata(cont)
         controller.load_ufos(cont)
-#        print("Para el índice de ")
+        print("se imprime la altura y el número de elementos del requerimiento 2")
+        print("Altura del arbol: "+str(controller.req2indexHeight(cont)))
+        print("Elementos en el arbol: "+ str(controller.req2indexSize(cont)))
 
-    elif int(inputs[0]) == 2:
+    elif int(inputs[0]) == 1:
         pass
 
     else:
