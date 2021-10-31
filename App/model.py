@@ -132,7 +132,8 @@ def addufos(catalog, ufos):
         "longitude":ufos["longitude"]
         }
     lt.addLast(catalog["UFOS"],ufo)
-    updateDuration(catalog["Duration"],ufos)
+    updateDuration(catalog["Duration"],ufo)
+    updateLongitude(catalog["Longitude"], ufo)
 
 
 #agregar informacion al indice del req1
@@ -168,7 +169,43 @@ def req2indexHeight (catalog):
 def req2indexSize(catalog):
     return om.size(catalog["Duration"])
 
-#agregar informacion al indice del req 2
+#agregar informacion al indice del req5
+def updateLongitude(tree, ufo):
+    occurredlongitude=str(int(ufo["longitude"]))
+    entry=om.get(tree,occurredlongitude)
+    if entry is None:
+        longitudeentry=newLatitudetree(ufo)
+        om.put(tree,occurredlongitude,longitudeentry)
+    else:
+        longitudeentry=me.getValue(entry)
+    addLatitudevalue(longitudeentry,ufo)
+    return tree
+
+def newLatitudetree(ufo):
+    latitudes={}
+    latitudes["latitudeindex"]=om.newMap (omaptype="RBT",
+                                  comparefunction=compareLatitudes)
+    return latitudes
+    
+def addLatitudevalue(tree, ufo):
+    tree=tree["latitudeindex"]
+    occurredlatitude=str(str(ufo["latitude"]))
+    entry=om.get(tree,occurredlatitude)
+    if entry is None:
+        latitudeentry=lt.newList("ARRAY_LISY")
+        om.put(tree,occurredlatitude,latitudeentry)
+    else:
+        latitudeentry=me.getValue(entry)
+    lt.addLast(latitudeentry,ufo)
+    return tree
+
+def compareLatitudes (Lati1, Lati2):
+    if (Lati1==Lati2):
+        return 0
+    elif (Lati1 > Lati2):
+        return 1
+    else:
+        return -1
 
 
 
@@ -176,6 +213,24 @@ def req2indexSize(catalog):
 #Req1, crear arbol por la ciudad entrada por parametro
 def createtreecity(catalog, city):
     citytable=catalog["Cities"]
+
+#Req2,Contar los avistamientos por duración
+#número de avistamientos con la duración más larga
+def longduration (catalog):
+    durationtree=catalog["Duration"]
+    maxduration=om.maxKey(durationtree)
+    lst=me.getValue(maxduration)
+    numviews=lt.size(lst)
+    return numviews
+
+#mostrar avistamientos en un rango de duración
+def sightings_in_range(catalog, segmin, segmax):
+    durationtree=catalog["Duration"]
+    range=om.keys(durationtree,segmin,segmax)
+    i=1
+    while i <=3:
+        
+
 
 
 
