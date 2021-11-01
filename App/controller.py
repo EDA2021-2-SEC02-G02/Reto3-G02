@@ -61,16 +61,27 @@ def createtreecity(catalog,city):
     model.createtreecity(catalog,city)
 
 #req 2
-def req2indexHeight(catalog):
-    return model.req2indexHeight(catalog)
-
-def req2indexSize(catalog):
-    return model.req2indexSize(catalog)
+#def req2indexSize(catalog):
+ #   return model.req2indexSize(catalog)
     
-# Inicialización del Catálogo de libros
+def longduration (catalog):
+    return model.longduration(catalog)
 
-# Funciones para la carga de datos
+def sightings_in_range(catalog, segmin, segmax):
+    return model. sightings_in_range(catalog, segmin, segmax)
+    
 
-# Funciones de ordenamiento
 
-# Funciones de consulta sobre el catálogo
+
+#Req5
+def num_in_range(catalog, longmin, longmax, latmin, latmax):
+    return model.num_in_range(catalog, longmin, longmax, latmin, latmax)
+
+def total_in_area(lst_in_range):
+    return model.total_in_area(lst_in_range)
+
+def sorting_list(lst_in_range):
+    return model.sorting_list(lst_in_range)
+
+def fivefirstlast(lst_in_range):
+    return model.fivefirstlast(lst_in_range)

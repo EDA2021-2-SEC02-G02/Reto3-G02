@@ -53,14 +53,62 @@ while True:
     inputs = input('Seleccione una opción para continuar\n')
     if int(inputs[0]) == 0:
         print("Creando y cargando información del archivo ....")
-        cont=controller.initcatalog()
-        controller.loaddata(cont)
-        controller.load_ufos(cont)
-        print("se imprime la altura y el número de elementos del requerimiento 2")
-        print("Altura del arbol: "+str(controller.req2indexHeight(cont)))
-        print("Elementos en el arbol: "+ str(controller.req2indexSize(cont)))
+        catalog=controller.initcatalog()
+        controller.loaddata(catalog)
+        
+    #elif int(inputs[0]) == 1:
 
-    elif int(inputs[0]) == 1:
+    elif int(inputs[0]) ==2:
+        seg_min=float(input("Ingrese el número de segundos en donde desea que empiece el rango: "))
+        seg_max=float(input("Ingrese el número de segundos en donde desea que termine el rango: "))
+        total_sightings=controller.longduration(catalog)
+        list_range=controller.sightings_in_range(catalog, seg_min, seg_max)
+        print("El total de avistamientos registrados con duración máxima en el rango es: ")
+        print(total_sightings)
+        print("La información de los tres primeros y ultimos avistamientos dentro del rango de duración son: ")
+        for element in lt.iterator(list_range[0]):
+                print("Fecha y hora: "+element["datetime"]+
+                          ". Ciudad: "+element["city"]+
+                          ". Pais: "+element["country"]+
+                          ". Duración en segundos: "+ element["duration (seconds)"]+
+                          ". Forma del objeto: "+element["shape"])
+        for element in lt.iterator(list_range[1]):
+                print("Fecha y hora: "+element["datetime"]+
+                          ". Ciudad: "+element["city"]+
+                          ". Pais: "+element["country"]+
+                          ". Duración en segundos: "+ element["duration (seconds)"]+
+                          ". Forma del objeto: "+element["shape"])
+    
+        #elif int(inputs[0]) ==3:
+
+        #elif int(inputs[0]) ==4:
+
+        
+    elif int(inputs[0]) ==5:
+        longmin=input("Ingrese la longitud en donde desea que empiece el rango: ")
+        longmax=input("Ingrese la longitud en donde desea que termine el rango: ")
+        latmin=input("Ingrese la latitud en donde desea que empiece el rango: ")
+        latmax=input("Ingrese la latitud en donde desea que termine el rango: ")
+        list_range=controller.num_in_range(catalog, longmin, longmax, latmin, latmax)
+        total_in_range=controller.total_in_area(list_range)
+        sorted_list=controller.sorting_list(list_range)
+        fivefirstlast=controller.fivefirstlast(sorted_list)
+        print("El total de avistamientos en el area definida es de: ")
+        print(total_in_range)
+        print("La información de los cinco primeros y cinco últimos avistamientos dentro del rango es: ")
+        for element in lt.iterator(fivefirstlast[0]):
+            print("Fecha y hora: "+element["datetime"]+
+                          ". Ciudad: "+element["city"]+
+                          ". Pais: "+element["country"]+
+                          ". Duración en segundos: "+ element["duration (seconds)"]+
+                          ". Forma del objeto: "+element["shape"]+
+                          ". Longitud: "+element["longitude"]+
+                          ". Latitud: "+element["latitude"])
+
+
+
+
+
         pass
 
     else:

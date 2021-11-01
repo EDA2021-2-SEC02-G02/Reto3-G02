@@ -31,6 +31,7 @@ from DISClib.ADT import orderedmap as om
 from DISClib.ADT import map as mp
 from DISClib.DataStructures import mapentry as me
 from DISClib.Algorithms.Sorting import shellsort as sa
+from DISClib.Algorithms.Sorting import mergesort as mg
 import datetime as dt
 assert cf
 
@@ -153,7 +154,7 @@ def addcities(tablecity,city,ufos):
 
 #agregar informacion al indice del req2
 def updateDuration(tree, ufo):
-    occurredduration=ufo["duration (seconds)"]
+    occurredduration=float(ufo["duration (seconds)"])
     entry=om.get(tree,occurredduration)
     if entry is None:
         durationentry=lt.newList("ARRAY_LIST")
@@ -163,15 +164,12 @@ def updateDuration(tree, ufo):
     lt.addLast(durationentry,ufo)
     return tree
 
-def req2indexHeight (catalog):
-    return om.height(catalog["Duration"])
-
-def req2indexSize(catalog):
-    return om.size(catalog["Duration"])
+#def req2indexSize(catalog):
+ #   return om.size(catalog["Duration"])
 
 #agregar informacion al indice del req5
 def updateLongitude(tree, ufo):
-    occurredlongitude=str(int(ufo["longitude"]))
+    occurredlongitude=(round(float(ufo["longitude"]),2))
     entry=om.get(tree,occurredlongitude)
     if entry is None:
         longitudeentry=newLatitudetree(ufo)
@@ -189,7 +187,7 @@ def newLatitudetree(ufo):
     
 def addLatitudevalue(tree, ufo):
     tree=tree["latitudeindex"]
-    occurredlatitude=str(str(ufo["latitude"]))
+    occurredlatitude=(round(float(ufo["latitude"]),2))
     entry=om.get(tree,occurredlatitude)
     if entry is None:
         latitudeentry=lt.newList("ARRAY_LISY")
@@ -219,21 +217,53 @@ def createtreecity(catalog, city):
 def longduration (catalog):
     durationtree=catalog["Duration"]
     maxduration=om.maxKey(durationtree)
-    lst=me.getValue(maxduration)
+    key_value=om.get(durationtree,maxduration)
+    lst=me.getValue(key_value)
     numviews=lt.size(lst)
     return numviews
 
 #mostrar avistamientos en un rango de duración
 def sightings_in_range(catalog, segmin, segmax):
     durationtree=catalog["Duration"]
-    range=om.keys(durationtree,segmin,segmax)
-    i=1
-    while i <=3:
-        
+    range=om.values(durationtree,segmin,segmax)
+    list_answer=lt.newList("ARRAY_LIST")
+    for lst in lt.iterator(range):
+        for sightings in lt.iterator(lst):
+            lt.addLast(list_answer,sightings)
+    firstthree=lt.subList(list_answer,1,3)
+    lastthree=lt.subList(list_answer,(lt.size(list_answer)-2),3)
+    return firstthree, lastthree
 
+#Req 5.Contar los avistamientos de una Zona Geográfica
 
+def num_in_range(catalog, longmin, longmax, latmin, latmax):
+    longitudetree=catalog["Longitude"]
+    longituderange=om.values(longitudetree,longmin,longmax)
+    lst_in_range=lt.newList("ARRAY_LIST")
+    for longitude in lt.iterator(longituderange):
+        latituderange=om.values(longitude,latmin,latmax)
+        if lt.size(latituderange)>1:
+            for elem in latituderange:
+                lt.addLast(lst_in_range,elem)
+        else:
+            lt.addLast(lst_in_range,latituderange)
+    return lst_in_range
 
+def total_in_area(lst_in_range):
+    size=lt.size(lst_in_range)
+    return size
 
-# Funciones utilizadas para comparar elementos dentro de una lista
+def sorting_list(lst_in_range):
+    sorted_list=mg.sort(lst_in_range, cmpBylongitude)
+    return sorted_list
 
-# Funciones de ordenamiento
+def cmpBylongitude(longitude1, longitude2):
+    if longitude1["longitude"]!="" and longitude2["longitude"]!="":
+        long1=longitude1["longitude"]
+        long2=longitude2["longitude"]
+        return long1<long2
+
+def fivefirstlast(sorted_list):
+    fivefirst=lt.subList(sorted_list,1,5)
+    fivelast=lt.subList(sorted_list,(lt.size(sorted_list)-4),5)
+    return fivefirst,fivelast
