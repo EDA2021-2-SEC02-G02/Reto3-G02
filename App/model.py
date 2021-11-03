@@ -110,6 +110,8 @@ def compareDates(Date1, Date2):
 
 #comparefunction req 5
 def compareLongitudes(Long1, Long2):
+    Long1=float(Long1)
+    Long2=float(Long2)
     if (Long1==Long2):
         return 0
     elif (Long1 > Long2):
@@ -195,9 +197,11 @@ def addLatitudevalue(tree, ufo):
     else:
         latitudeentry=me.getValue(entry)
     lt.addLast(latitudeentry,ufo)
-    return tree
+
 
 def compareLatitudes (Lati1, Lati2):
+    Lati1=float(Lati1)
+    Lati2=float(Lati2)
     if (Lati1==Lati2):
         return 0
     elif (Lati1 > Lati2):
@@ -241,13 +245,19 @@ def num_in_range(catalog, longmin, longmax, latmin, latmax):
     longituderange=om.values(longitudetree,longmin,longmax)
     lst_in_range=lt.newList("ARRAY_LIST")
     for longitude in lt.iterator(longituderange):
+        longitude=longitude["latitudeindex"]
         latituderange=om.values(longitude,latmin,latmax)
-        if lt.size(latituderange)>1:
-            for elem in latituderange:
+        if lt.size(latituderange)>=1:
+            for elem in lt.iterator(latituderange):
                 lt.addLast(lst_in_range,elem)
         else:
             lt.addLast(lst_in_range,latituderange)
-    return lst_in_range
+    answer=lt.newList("ARRAY_LIST")
+    for element in lt.iterator(lst_in_range):
+        if not lt.isEmpty(element):
+            for ufo in lt.iterator(element):
+                lt.addLast(answer,ufo)
+    return answer
 
 def total_in_area(lst_in_range):
     size=lt.size(lst_in_range)
@@ -259,8 +269,8 @@ def sorting_list(lst_in_range):
 
 def cmpBylongitude(longitude1, longitude2):
     if longitude1["longitude"]!="" and longitude2["longitude"]!="":
-        long1=longitude1["longitude"]
-        long2=longitude2["longitude"]
+        long1=float(longitude1["longitude"])
+        long2=float(longitude2["longitude"])
         return long1<long2
 
 def fivefirstlast(sorted_list):

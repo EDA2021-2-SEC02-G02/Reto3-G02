@@ -56,6 +56,7 @@ while True:
         catalog=controller.initcatalog()
         controller.loaddata(catalog)
         
+        
     #elif int(inputs[0]) == 1:
 
     elif int(inputs[0]) ==2:
@@ -96,8 +97,18 @@ while True:
         print("El total de avistamientos en el area definida es de: ")
         print(total_in_range)
         print("La información de los cinco primeros y cinco últimos avistamientos dentro del rango es: ")
-        for element in lt.iterator(fivefirstlast[0]):
-            print("Fecha y hora: "+element["datetime"]+
+        if lt.size(sorted_list)<=10:
+            for element in lt.iterator(sorted_list):
+                print("Fecha y hora: "+element["datetime"]+
+                          ". Ciudad: "+element["city"]+
+                          ". Pais: "+element["country"]+
+                          ". Duración en segundos: "+ element["duration (seconds)"]+
+                          ". Forma del objeto: "+element["shape"]+
+                          ". Longitud: "+element["longitude"]+
+                          ". Latitud: "+element["latitude"])
+        else:
+            for element in lt.iterator(fivefirstlast[0]):
+                print("Fecha y hora: "+element["datetime"]+
                           ". Ciudad: "+element["city"]+
                           ". Pais: "+element["country"]+
                           ". Duración en segundos: "+ element["duration (seconds)"]+
@@ -105,6 +116,14 @@ while True:
                           ". Longitud: "+element["longitude"]+
                           ". Latitud: "+element["latitude"])
 
+            for element in lt.iterator(fivefirstlast[1]):
+                print("Fecha y hora: "+element["datetime"]+
+                          ". Ciudad: "+element["city"]+
+                          ". Pais: "+element["country"]+
+                          ". Duración en segundos: "+ element["duration (seconds)"]+
+                          ". Forma del objeto: "+element["shape"]+
+                          ". Longitud: "+element["longitude"]+
+                          ". Latitud: "+element["latitude"])
 
 
 
