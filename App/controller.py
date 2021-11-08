@@ -53,12 +53,11 @@ def load_tables(catalog):
     for ufos in lt.iterator (catalog["UFOS"]):
         city=ufos["city"]
         tablecity=catalog["Cities"]
-        model.addcities(tablecity,city,ufos)
     return catalog
 
-#req 1
-def createtreecity(catalog,city):
-    model.createtreecity(catalog,city)
+#Req 1
+def sightsbycity(catalog,city):
+    return model.sightsbycity(catalog,city)
 
 #req 2
 #def req2indexSize(catalog):
@@ -70,9 +69,9 @@ def longduration (catalog):
 def sightings_in_range(catalog, segmin, segmax):
     return model. sightings_in_range(catalog, segmin, segmax)
     
-
-
-
+#req 4
+def  sightsbycity(catalog,city):
+    return model.sightsbycity(catalog,city)
 #Req5
 def num_in_range(catalog, longmin, longmax, latmin, latmax):
     return model.num_in_range(catalog, longmin, longmax, latmin, latmax)
