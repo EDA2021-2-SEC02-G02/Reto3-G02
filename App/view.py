@@ -128,7 +128,7 @@ while True:
         print("avistamientos mas tardios: "+ str(avistamientos))
 
         limIn=input("Ingrese el limite inferior de hora: ")
-        limSup=input("Ingrese el limite superior de hora: ")
+        limSup=input("\nIngrese el limite superior de hora: ")
 
         dateIn= dt.time.fromisoformat(limIn)
         dateSup= dt.time.fromisoformat(limSup)
