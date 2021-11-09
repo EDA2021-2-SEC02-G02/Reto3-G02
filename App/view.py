@@ -121,7 +121,50 @@ while True:
                           ". Duración en segundos: "+ element["duration (seconds)"]+
                           ". Forma del objeto: "+element["shape"])
     
-        #elif int(inputs[0]) ==3:
+    elif int(inputs[0]) ==3:
+        index= catalog["HourMin"]
+        antigua= om.minKey(index)
+        avistamientos= lt.size(me.getValue(om.get(index,antigua)))
+        print("avistamientos mas tardios: "+ str(avistamientos))
+
+        limIn=input("Ingrese el limite inferior de hora: ")
+        limSup=input("Ingrese el limite superior de hora: ")
+
+        dateIn= dt.time.fromisoformat(limIn)
+        dateSup= dt.time.fromisoformat(limSup)
+
+        sightings= om.values(index, dateIn, dateSup)
+        nuevaLista= lt.newList("ARRAY_LIST")
+
+        for lista in lt.iterator(sightings):
+            for ufo in lt.iterator(lista):
+                lt.addLast(nuevaLista,ufo)
+        
+        total= lt.size(nuevaLista)
+        print("\nel total de avistamientos en el rango es de: "+str(total))
+
+        print("\nlos primeros tres y los ultimos tres avistamientos reportados son: ")
+
+        i= 1
+        while i <= 3:
+            ufo= lt.getElement(nuevaLista, i)
+            
+            print("Fecha: "+ufo["datetime"]+
+                  ". Ciudad: " +ufo["city"]+
+                  ". Pais: " +ufo["country"]+
+                  ". Duración en segundos: " +ufo["duration (seconds)"]+
+                  ". Forma del objeto: " +ufo["shape"])
+            i+=1
+        
+        i=-2
+        while i <= 0:
+            ufo= lt.getElement(nuevaLista, i)
+            print("Fecha: "+ufo["datetime"]+
+                  ". Ciudad: " +ufo["city"]+
+                  ". Pais: " +ufo["country"]+
+                  ". Duración en segundos: " +ufo["duration (seconds)"]+
+                  ". Forma del objeto: " +ufo["shape"])
+            i+=1
 
     elif int(inputs[0]) ==4:
         index= catalog["Date"]
@@ -143,9 +186,9 @@ while True:
                 lt.addLast(nuevaLista,ufo)
         
         total= lt.size(nuevaLista)
-        print("el total de avistamientos en el rango es de: "+str(total))
+        print("\nel total de avistamientos en el rango es de: "+str(total))
 
-        print("\los primeros tres y los ultimos tres avistamientos reportados son: ")
+        print("\nlos primeros tres y los ultimos tres avistamientos reportados son: ")
 
         i= 1
         while i <= 3:

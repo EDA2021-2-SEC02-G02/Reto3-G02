@@ -158,7 +158,7 @@ def addCity (catalog,ufo):
 #Req 3- Contar avistamientos por hora/minuros del día
 def addHour(map, ufo):
     date= ufo["datetime"]
-    date= dt.datetime.fromisoformat(date)
+    date= dt.datetime.fromisoformat(date).time()
     present= om.contains(map, date)
 
     if present:
