@@ -133,9 +133,10 @@ def addufos(catalog, ufos):
     updateLongitude(catalog["Longitude"], ufo)
     addCity(catalog["Cities"],ufo)
     addDate(catalog["Date"], ufo)
+    addHour(catalog["HourMin"], ufo)
 
 
-#Req 1
+#Req 1-Contar avistamientos en una ciudad
 def addCity (catalog,ufo):
     city= ufo["city"]
     index= catalog
@@ -154,8 +155,8 @@ def addCity (catalog,ufo):
     count= om.size(value["datetime"])
     value["count"]= count
 
-#Req 4
-def addDate(map, ufo):
+#Req 3- Contar avistamientos por hora/minuros del día
+def addHour(map, ufo):
     date= ufo["datetime"]
     date= dt.datetime.fromisoformat(date)
     present= om.contains(map, date)
@@ -169,6 +170,22 @@ def addDate(map, ufo):
         lt.addLast(avistamientos, ufo)
         om.put(map,date,avistamientos)
         
+
+#Req 4- Contar avistamientos en un rango de fechas
+def addDate(map, ufo):
+    date= ufo["datetime"]
+    date= dt.datetime.fromisoformat(date)
+    present= om.contains(map, date)
+
+    if present:
+        entry= om.get(map, date)
+        lista= me.getValue(entry)
+        lt.addLast(lista, ufo)
+    else:
+        avistamientos= lt.newList("ARRAY_LIST")
+        lt.addLast(avistamientos, ufo)
+        om.put(map,date,avistamientos)
+
     
 
 #agregar informacion al indice del req2
@@ -183,8 +200,6 @@ def updateDuration(tree, ufo):
     lt.addLast(durationentry,ufo)
     return tree
 
-#def req2indexSize(catalog):
- #   return om.size(catalog["Duration"])
 
 #agregar informacion al indice del req5
 def updateLongitude(tree, ufo):
