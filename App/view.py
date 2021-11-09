@@ -21,11 +21,15 @@
  """
 
 import config as cf
+import time
 import sys
 import controller
 from DISClib.ADT import list as lt
 assert cf
-
+from DISClib.ADT import map as mp
+from DISClib.DataStructures import mapentry as me
+from DISClib.ADT import orderedmap as om
+import datetime as dt
 
 """
 La vista se encarga de la interacción con el usuario
@@ -57,7 +61,44 @@ while True:
         controller.loaddata(catalog)
         
         
-    #elif int(inputs[0]) == 1:
+    elif int(inputs[0]) == 1:
+        city=input("ingrese la ciudad a buscar: ")
+        index= catalog["Cities"]
+        ciudades= lt.size(mp.keySet(index))
+        print("\nhay "+str(ciudades)+" ciudades reportadas con avistamientos")
+
+        entry= mp. get(index,city)
+        value= me.getValue(entry)
+        print("\nse han reportado "+str(value["count"])+ " avistamientos en "+city)
+        print("\los primeros tres y los ultimos tres avistamientos reportados son: ")
+        ufos= om.valueSet(value["datetime"])
+
+        nuevaLista= lt.newList("ARRAY_LIST")
+        for lista in lt.iterator(ufos):
+            for ufo in lt.iterator(lista):
+                lt.addLast(nuevaLista,ufo)
+
+        i= 1
+        while i <= 3:
+            ufo= lt.getElement(nuevaLista, i)
+            
+            print("Fecha: "+ufo["datetime"]+
+                  ". Ciudad: " +ufo["city"]+
+                  ". Pais: " +ufo["country"]+
+                  ". Duración en segundos: " +ufo["duration (seconds)"]+
+                  ". Forma del objeto: " +ufo["shape"])
+            i+=1
+        
+        i=-2
+        while i <= 0:
+            ufo= lt.getElement(nuevaLista, i)
+            print("Fecha: "+ufo["datetime"]+
+                  ". Ciudad: " +ufo["city"]+
+                  ". Pais: " +ufo["country"]+
+                  ". Duración en segundos: " +ufo["duration (seconds)"]+
+                  ". Forma del objeto: " +ufo["shape"])
+            i+=1
+
 
     elif int(inputs[0]) ==2:
         seg_min=float(input("Ingrese el número de segundos en donde desea que empiece el rango: "))
@@ -82,9 +123,53 @@ while True:
     
         #elif int(inputs[0]) ==3:
 
-        #elif int(inputs[0]) ==4:
+    elif int(inputs[0]) ==4:
+        index= catalog["Date"]
+        antigua= om.minKey(index)
+        avistamientos= lt.size(me.getValue(om.get(index,antigua)))
+        print("el numero de avistamientos con fecha mas antigua es: "+ str(avistamientos))
 
+        limIn=input("Ingrese el limite inferior de fecha: ")
+        limSup=input("Ingrese el limite superior de fecha: ")
+
+        dateIn= dt.datetime.fromisoformat(limIn)
+        dateSup= dt.datetime.fromisoformat(limSup)
+
+        sightings= om.values(index, dateIn, dateSup)
+        nuevaLista= lt.newList("ARRAY_LIST")
+
+        for lista in lt.iterator(sightings):
+            for ufo in lt.iterator(lista):
+                lt.addLast(nuevaLista,ufo)
         
+        total= lt.size(nuevaLista)
+        print("el total de avistamientos en el rango es de: "+str(total))
+
+        print("\los primeros tres y los ultimos tres avistamientos reportados son: ")
+
+        i= 1
+        while i <= 3:
+            ufo= lt.getElement(nuevaLista, i)
+            
+            print("Fecha: "+ufo["datetime"]+
+                  ". Ciudad: " +ufo["city"]+
+                  ". Pais: " +ufo["country"]+
+                  ". Duración en segundos: " +ufo["duration (seconds)"]+
+                  ". Forma del objeto: " +ufo["shape"])
+            i+=1
+        
+        i=-2
+        while i <= 0:
+            ufo= lt.getElement(nuevaLista, i)
+            print("Fecha: "+ufo["datetime"]+
+                  ". Ciudad: " +ufo["city"]+
+                  ". Pais: " +ufo["country"]+
+                  ". Duración en segundos: " +ufo["duration (seconds)"]+
+                  ". Forma del objeto: " +ufo["shape"])
+            i+=1
+
+
+
     elif int(inputs[0]) ==5:
         longmin=input("Ingrese la longitud en donde desea que empiece el rango: ")
         longmax=input("Ingrese la longitud en donde desea que termine el rango: ")

@@ -49,12 +49,9 @@ def newCatalog():
           "Date":None,
           "Longitude":None
          }
-    catalog['UFOS']= lt.newList('SINGLE_LINKED')
+    catalog['UFOS']= lt.newList('ARRAY_LIST')
 #Req 1
-    catalog["Cities"]=mp.newMap(19901,
-                           maptype="PROBING",
-                           loadfactor=0.5,
-                           comparefunction=compareCities)
+    catalog["Cities"]=mp.newMap(2000, maptype= "PROBING", loadfactor=0.5, comparefunction=compareCities)
 #Req 2
     catalog["Duration"]=om.newMap(omaptype="RBT",
                                   comparefunction=compareSec)
@@ -69,14 +66,11 @@ def newCatalog():
                                    comparefunction=compareLongitudes)
     return catalog
 
-#def compareufos (ufo1,ufo2):
-
-#comparefunction req 1
-def compareCities (keycity,city):
-    cityentry=me.getKey(city)
-    if (keycity==cityentry):
+#Comparefunction req 1
+def compareCities (city1,city2):
+    if (city1 ==me.getKey(city2)):
         return 0
-    elif (keycity>cityentry):
+    elif (city1>me.getKey(city2)):
         return 1
     else:
         return -1
@@ -137,22 +131,45 @@ def addufos(catalog, ufos):
     lt.addLast(catalog["UFOS"],ufo)
     updateDuration(catalog["Duration"],ufo)
     updateLongitude(catalog["Longitude"], ufo)
+    addCity(catalog["Cities"],ufo)
+    addDate(catalog["Date"], ufo)
 
 
-#agregar informacion al indice del req1
-def addcities(tablecity,city,ufos):
-    try:
-        if city != "" and mp.contains(tablecity,city)==False:
-            ufoslist=lt.newList("ARRAY_LIST")
-            lt.addLast(ufoslist,ufos)
-            mp.put(tablecity,city,ufoslist)
-        elif mp.contains(tablecity,city)==True:
-            temp=mp.get(tablecity,city)
-            temp=me.getValue(temp)
-            lt.addLast(temp,ufos)
-    except Exception as e:
-        raise e
+#Req 1
+def addCity (catalog,ufo):
+    city= ufo["city"]
+    index= catalog
+    present= mp.contains(index,city)
 
+    if not present:
+        datetime= om.newMap(omaptype="RBT",
+                                  comparefunction=compareDates)
+        count= 0 
+        info={"count":count, "datetime":datetime}
+        mp.put(index,city,info)
+
+    entry= mp.get(index,city)
+    value= me.getValue(entry)
+    addDate(value["datetime"],ufo)
+    count= om.size(value["datetime"])
+    value["count"]= count
+
+#Req 4
+def addDate(map, ufo):
+    date= ufo["datetime"]
+    date= dt.datetime.fromisoformat(date)
+    present= om.contains(map, date)
+
+    if present:
+        entry= om.get(map, date)
+        lista= me.getValue(entry)
+        lt.addLast(lista, ufo)
+    else:
+        avistamientos= lt.newList("ARRAY_LIST")
+        lt.addLast(avistamientos, ufo)
+        om.put(map,date,avistamientos)
+        
+    
 
 #agregar informacion al indice del req2
 def updateDuration(tree, ufo):
@@ -212,9 +229,7 @@ def compareLatitudes (Lati1, Lati2):
 
 
 # Funciones de consulta
-#Req1, crear arbol por la ciudad entrada por parametro
-def createtreecity(catalog, city):
-    citytable=catalog["Cities"]
+
 
 #Req2,Contar los avistamientos por duración
 #número de avistamientos con la duración más larga
